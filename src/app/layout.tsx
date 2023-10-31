@@ -13,6 +13,7 @@ const p1 = Passion_One({
     subsets: ['latin'],
     weight: '400',
     style: 'normal',
+    fallback: ['sans-serif'],
     display: 'swap',
 });
 const helvetica = localFont({
@@ -28,7 +29,19 @@ const helvetica = localFont({
             style: 'normal',
         },
     ],
-    fallback: ['Arial', 'sans-serif'],
+    fallback: [
+        'Roboto',
+        'system-ui',
+        '-apple-system',
+        'BlinkMacSystemFont',
+        'Segoe UI',
+        'Oxygen',
+        'Ubuntu',
+        'Cantarell',
+        'Open Sans',
+        'Helvetica Neue',
+        'sans-serif',
+    ],
     display: 'swap',
 });
 

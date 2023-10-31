@@ -1,0 +1,75 @@
+.root {
+    margin-top: 1.5rem;
+}
+
+.data {
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+.date {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 2rem;
+}
+
+.distance {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.5rem;
+    width: min-content;
+}
+
+.distanceValue {
+    width: min-content;
+    white-space: nowrap;
+}
+
+.asterImg {
+    margin: 0 0.5rem;
+}
+
+.name {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.5rem;
+}
+
+.size {
+    font-size: 0.75rem;
+    line-height: 1rem;
+}
+
+.footer {
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+.cartButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 6rem;
+    height: 1.5rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.0625rem;
+    color: var(--Orange-Base, #f86600);
+    background: var(--Orange-Smooth, rgba(248, 102, 0, 0.15));
+    border-radius: 1rem;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.danger:not(:first-child) {
+    margin-left: 0.75rem;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .cartButton:hover {
+        color: white;
+        background: var(--Orange-Base, #f86600);
+    }
+}

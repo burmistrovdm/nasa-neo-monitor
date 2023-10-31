@@ -1,0 +1,56 @@
+.root {
+    position: fixed;
+    padding: 1rem;
+    background-color: var(--Cart-bg);
+}
+
+.title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.5rem;
+}
+
+.count {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5rem;
+}
+
+.button {
+    padding: 0.75rem 1rem;
+    font-weight: 700;
+    line-height: 1.5rem;
+    border-radius: 2.5rem;
+    background: var(--Orange-Base, #f86600);
+}
+
+/* Desktop and Tablet */
+@media (min-width: 701px) {
+    .root {
+        top: 8.25rem;
+        left: 58rem;
+        width: min-content;
+        border-radius: 1.5rem;
+    }
+
+    .button {
+        margin-top: 2rem;
+    }
+}
+
+/* Tablet and Smaller Desktop */
+@media (min-width: 701px) and (max-width: 1120px) {
+    .root {
+        left: 47.75rem;
+    }
+}
+/* Mobile */
+@media (max-width: 700px) {
+    .root {
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: space-between;
+    }
+}

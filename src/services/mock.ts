@@ -5029,6 +5029,8 @@ const nearObjects: INasaNeoApiResponse = {
 };
 
 export function getNearObjects() {
+    console.log(1);
+
     return Promise.resolve({
         ...nearObjects,
         asteroids: convertAsteroidsToSorted(Object.values(nearObjects.near_earth_objects).flat()),
