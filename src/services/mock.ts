@@ -2,6 +2,10 @@ import convertAsteroidsToSorted from '../helpers/convertAsteroidsToSorted';
 import { INasaNeoApiResponse } from '../models/NasaNeoApiResponseDTO';
 import { IAsteroidDTO } from '@/models/Asteroid';
 
+function delay(time: number) {
+    return new Promise(resolve => setTimeout(resolve, time));
+}
+
 const nearObjects: INasaNeoApiResponse = {
     links: {
         next: 'http://api.nasa.gov/neo/rest/v1/feed?start_date=2023-11-04&end_date=2023-11-11&detailed=false&api_key=DEMO_KEY',
@@ -5028,9 +5032,8 @@ const nearObjects: INasaNeoApiResponse = {
     },
 };
 
-export function getNearObjects() {
-    console.log(1);
-
+export async function getNearObjects() {
+    await delay(500);
     return Promise.resolve({
         ...nearObjects,
         asteroids: convertAsteroidsToSorted(Object.values(nearObjects.near_earth_objects).flat()),
@@ -9897,6 +9900,7 @@ const neo: IAsteroidDTO = {
     is_sentry_object: false,
 };
 
-export function getNeoById(id: string): Promise<IAsteroidDTO> {
+export async function getNeoById(id: string): Promise<IAsteroidDTO> {
+    await delay(500);
     return Promise.resolve(neo);
 }

@@ -1,0 +1,29 @@
+.title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 2.25rem;
+}
+
+.danger {
+    margin-top: 0.5rem;
+}
+
+.close {
+    margin-top: 1.5rem;
+}
+
+.listTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 2rem;
+}
+
+.date {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.75rem;
+}
+
+.spinner {
+    margin-top: 1rem;
+}
