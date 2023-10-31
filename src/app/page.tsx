@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import cn from 'classnames';
 import InfiniteScroll from 'react-infinite-scroller';
 import Cart from '@/components/Cart/Cart';
@@ -10,7 +10,6 @@ import { IAsteroid } from '@/models/Asteroid';
 import useIsMounted from '@/helpers/useIsMounted';
 import { getNearObjects } from '@/services/mock';
 import styles from './page.module.css';
-import useReffedValue from '@/helpers/useReffedValue';
 
 type AsteroidList = INasaNeoApiResponse & { asteroids: IAsteroid[] };
 async function getData(): Promise<AsteroidList> {
@@ -24,12 +23,8 @@ export default function Home() {
     const [loading, setLoading] = useState(false);
     const [lunarDistanceType, setLunarDistanceType] = useState(false);
 
-    const loadingRef = useReffedValue(loading);
     const loadMore = useCallback(() => {
-        console.log(2);
-        console.log(loadingRef.current);
-
-        if (loadingRef.current) {
+        if (loading) {
             return;
         }
         setLoading(true);
@@ -48,10 +43,14 @@ export default function Home() {
             .finally(() => {
                 checkMounted() && setLoading(false);
             });
-    }, [loadingRef, checkMounted]);
+    }, [loading, checkMounted]);
+
+    const loadMoreRef = useRef(loadMore);
+    useEffect(() => loadMoreRef.current(), [loadMoreRef]);
 
     if (error) {
-        throw new Error(String(error));
+        console.error(error);
+        return null;
     }
 
     return (
@@ -82,8 +81,9 @@ export default function Home() {
                     loader={<Spinner className={styles.spinner} />}
                     hasMore={true}
                     loadMore={loadMore}
-                    initialLoad={true}
+                    initialLoad={false}
                     useWindow={false}
+                    getScrollParent={() => document.body}
                 >
                     <ul>
                         {data?.asteroids.map(asteroid => (
