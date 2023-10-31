@@ -1,5 +1,6 @@
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { DateTime } from 'luxon';
 import cn from 'classnames';
 import InfiniteScroll from 'react-infinite-scroller';
 import Cart from '@/components/Cart/Cart';
@@ -8,12 +9,26 @@ import { INasaNeoApiResponse } from '@/models/NasaNeoApiResponseDTO';
 import Spinner from '@/components/Spinner/Spinner';
 import { IAsteroid } from '@/models/Asteroid';
 import useIsMounted from '@/helpers/useIsMounted';
-import { getNearObjects } from '@/services/mock';
+import convertAsteroidsToSorted from '@/helpers/convertAsteroidsToSorted';
+import useReffedValue from '@/helpers/useReffedValue';
 import styles from './page.module.css';
 
 type AsteroidList = INasaNeoApiResponse & { asteroids: IAsteroid[] };
-async function getData(): Promise<AsteroidList> {
-    return getNearObjects();
+async function getData(url?: string): Promise<AsteroidList> {
+    const startDate = DateTime.now().toFormat('yyyy-MM-dd');
+    const endDate = DateTime.now().plus({ days: 1 }).toFormat('yyyy-MM-dd');
+    const res = await fetch(
+        url ??
+            `https://api.nasa.gov/neo/rest/v1/feed?start_date=${startDate}&end_date=${endDate}&api_key=${process.env.NEXT_PUBLIC_API_KEY}`,
+    );
+    if (!res.ok) {
+        throw new Error('Failed to fetch data');
+    }
+
+    return res.json().then((data: INasaNeoApiResponse) => ({
+        ...data,
+        asteroids: convertAsteroidsToSorted(Object.values(data.near_earth_objects).flat()),
+    }));
 }
 
 export default function Home() {
@@ -23,12 +38,13 @@ export default function Home() {
     const [loading, setLoading] = useState(false);
     const [lunarDistanceType, setLunarDistanceType] = useState(false);
 
+    const dataRef = useReffedValue(data);
     const loadMore = useCallback(() => {
         if (loading) {
             return;
         }
         setLoading(true);
-        getData()
+        getData(dataRef.current?.links.next.replace('http://', 'https://'))
             .then(res => {
                 checkMounted() &&
                     setData(prevState => ({
@@ -43,7 +59,7 @@ export default function Home() {
             .finally(() => {
                 checkMounted() && setLoading(false);
             });
-    }, [loading, checkMounted]);
+    }, [loading, dataRef, checkMounted]);
 
     const loadMoreRef = useRef(loadMore);
     useEffect(() => loadMoreRef.current(), [loadMoreRef]);
@@ -87,7 +103,7 @@ export default function Home() {
                 >
                     <ul>
                         {data?.asteroids.map(asteroid => (
-                            <AsteroidCard lunarDistanceType={lunarDistanceType} data={asteroid} key={Math.random()} />
+                            <AsteroidCard lunarDistanceType={lunarDistanceType} data={asteroid} key={asteroid.id} />
                         ))}
                     </ul>
                 </InfiniteScroll>

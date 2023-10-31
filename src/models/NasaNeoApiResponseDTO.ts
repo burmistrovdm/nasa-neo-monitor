@@ -10,4 +10,5 @@ export interface INasaNeoApiResponse {
     near_earth_objects: {
         [date: string]: IAsteroidDTO[];
     };
+    is_sentry_object: boolean;
 }

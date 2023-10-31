@@ -6,10 +6,14 @@ import separateThousand from '@/helpers/separateThousand';
 import { useRequest } from '@/helpers/useRequest';
 import Spinner from '@/components/Spinner/Spinner';
 import styles from './page.module.css';
-import { getNeoById } from '@/services/mock';
 
 async function getData(id: string): Promise<IAsteroidDTO> {
-    return getNeoById(id);
+    const res = await fetch(`https://api.nasa.gov/neo/rest/v1/neo/${id}?api_key=${process.env.NEXT_PUBLIC_API_KEY}`);
+    if (!res.ok) {
+        throw new Error('Failed to fetch data');
+    }
+
+    return res.json();
 }
 
 export default function Asteroid({ params: { id } }: { params: { id: string } }) {
